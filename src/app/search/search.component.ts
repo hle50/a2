@@ -1,0 +1,91 @@
+import {Component, OnInit} from '@angular/core';
+
+
+@Component({
+    selector:'search',
+    //templateUrl: 'app/search/search.template.html',
+    template:`
+    <section class="site-section site-section-light site-section-top">
+    <div class="container text-center" style="padding-right: 0px">
+        <div class="mobile-bar search-mobile-section">
+            <div class="pull-right">
+                <ul id="iconRightUL">
+                    <li class="shopinfo">
+                        <div class="shopper-icon-section">
+                            <i class="top-deliver-icon"></i>
+                        </div>
+                        <div style="font-size: 12px;" class="text-logo">
+                            <span class="shoppernumber">  1 shopper</span>
+                        </div>
+                    </li>
+                    <!-- <li class="map">
+                      <a class="product-selection-item dpt_department" href="#" data-id="0">
+                        <img src="{{departmentIcon}}"/>
+                        <span>Map</span>
+                      </a>
+                    </li> -->
+                    <li class="time">
+                        <i class="glyphicon glyphicon-time"></i>
+                        <span>lllico</span>
+                    </li>
+                    <li class="location">
+                        <i class="glyphicon glyphicon-map-marker"></i>
+                        <span>D2</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="pull-left search-group-section">
+                <div class="input-group input-group-lg search-group">
+                    <span class="hiddenSearch"></span>
+                    <input type="text" id="productSearchBar"
+                           class="form-control productSearchBar productSearchBarWidth"
+                           placeholder="Search products">
+                </div>
+            </div>
+        </div>
+        <div class="desktop-only search-desktop-section">
+            <!--{{>mobileNav}}-->
+            <div class="pull-right">
+                <ul id="iconRightUL">
+                    <li class="shopinfo">
+                        <div class="shopper-icon-section">
+                            <i class="top-deliver-icon"></i>
+                        </div>
+                        <div style="height: 13px;" class="text-logo">
+
+                            <span class="shoppernumber"> 1 shopper</span>
+
+                        </div>
+                    </li>
+                    <!-- <li class="map">
+                      <a class="product-selection-item dpt_department" href="#" data-id="0">
+                        <img src="{{departmentIcon}}"/>
+                        <span>Map</span>
+                      </a>
+                    </li> -->
+                    <li class="time">
+                        <i class="glyphicon glyphicon-time"></i>
+                        <span>lllico</span>
+                    </li>
+                    <li class="location">
+                        <i class="glyphicon glyphicon-map-marker"></i>
+                        <span>D2</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="pull-left search-group-section">
+                <div class="input-group input-group-lg search-group">
+                    <span class="hiddenSearch"></span>
+                    <input type="text" id="productSearchBar" class="form-control productSearchBar"
+                           placeholder="Search products..">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    `
+
+})
+export class SearchComponent  {
+
+}
