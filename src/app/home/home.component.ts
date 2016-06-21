@@ -1,14 +1,13 @@
-
 import {Component, OnInit} from '@angular/core';
-import {RouterLink, Router} from '@angular/router-deprecated';
+import {RouterLink} from '@angular/router-deprecated';
 import {HomeService} from './home.service';
 import {ProductComponent} from '../product/product.component';
 import {SearchResultComponent} from '../shared/searchResult';
 import {GlobalService} from "../shared/global.service";
 
 @Component({
-    //templateUrl: 'app/home/home.template.html',
-    template:`
+  //templateUrl: 'app/home/home.template.html',
+  template: `
 
     <div *ngIf="!share.getIsSearching()" class="row store-items" id="selections_section">
         <div class="container">
@@ -48,30 +47,47 @@ import {GlobalService} from "../shared/global.service";
         </div>
 
     </div>
-{{share.getIsSearching()}}
     <search-result  (window:scroll)="onScroll($event)"></search-result>
 
     `,
-    providers: [HomeService,Router],
-    directives: [RouterLink, ProductComponent,SearchResultComponent]
+  providers: [HomeService],
+  directives: [RouterLink, ProductComponent, SearchResultComponent]
 })
 export class HomeComponent implements OnInit {
-    data;
-    visible;
-    result;
-    constructor(private _service: HomeService,private share: GlobalService){
-        // this.router.changes.subscribe(val => console.log(val));
-    }
+  data;
 
-    ngOnInit(){
-        this.visible = this.share.getIsSearching();
-        this.result = this.share.getSearchResult();
-        this._service.getSelection()
-            .subscribe((data) => this.data = data.result);
+  isLoading:boolean = false;
+  constructor(private _service:HomeService, private share:GlobalService) {
+    // this.router.changes.subscribe(val => console.log(val));
+  }
+
+  ngOnInit() {
+    this.share.setIsSearching(false);
+    this.share.setOffset(0);
+    this.share.setIsEndSearching(false);
+    this.share.setSearchResult([]);
+    this._service.getSelection()
+      .subscribe((data) => this.data = data.result);
+  }
+
+  onScroll() {
+    if (!this.share.getIsSearching() || !this.share.isEndSearching)
+      return;
+    if (((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 400)) && !this.isLoading) {
+      this.isLoading = true;
+      this.share.getSelection(this.share.getSearchValue())
+        .subscribe((data) => {
+          if(data.status == 'true'){
+            let d = this.share.getSearchResult().concat(data.result);
+            this.share.setSearchResult(d);
+            this.share.setOffset(this.share.getOffest() + 20);
+            this.isLoading = false;
+            this.share.isEndSearching = data.status==='true';
+          }
+
+        });
+
     }
-    
-    onScroll(){
-        console.log('abc');
-    }
-    
+  }
+
 }

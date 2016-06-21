@@ -1,6 +1,5 @@
 import {Component, OnInit,AfterViewInit, OnChanges } from '@angular/core';
 import {ControlGroup, FormBuilder} from '@angular/common';
-import {SearchService} from './search.service'
 import {GlobalService} from "../shared/global.service";
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -8,9 +7,9 @@ import 'rxjs/add/operator/switchMap';
 
 
 @Component({
-    selector: 'search',
-    //templateUrl: 'app/search/search.template.html',
-    template: `
+  selector: 'search',
+  //templateUrl: 'app/search/search.template.html',
+  template: `
     <section class="site-section site-section-light site-section-top">
     <div class="container text-center" style="padding-right: 0px">
         <div class="mobile-bar search-mobile-section">
@@ -43,7 +42,7 @@ import 'rxjs/add/operator/switchMap';
             <div class="pull-left search-group-section">
                 <div class="input-group input-group-lg search-group">
                     <span class="hiddenSearch"></span>
-                    <input type="text" id="productSearchBar" 
+                    <input type="text" id="productSearchBar"
                            class="form-control productSearchBar productSearchBarWidth"
                            placeholder="Search products">
                 </div>
@@ -82,44 +81,57 @@ import 'rxjs/add/operator/switchMap';
             <div class="pull-left search-group-section">
                 <form [ngFormModel]="form" class="input-group input-group-lg search-group">
                     <span class="hiddenSearch"></span>
-                  
+
                     <input (keyup)="change()" type="text" id="productSearchBar" class="form-control productSearchBar"
                        ngControl="search"  placeholder="Search products1..">
-                  
-                    
+
+
                 </form>
             </div>
         </div>
     </div>
 </section>
     `,
-    providers:[SearchService]    
+
 
 })
 export class SearchComponent implements OnInit,AfterViewInit {
-    public limit:number = 20;
-    public offset:number = 0;
-    public search:string ='';
-    ngOnInit() {
-      
-    }
-    form: ControlGroup;
-    constructor(fb: FormBuilder,private searchSerivce: SearchService, private share: GlobalService) {
-        this.form = fb.group({
-            search: []
-        });
-        
-      
-    }  
-    ngAfterViewInit(){
-           var search = this.form.find('search');
-        search.valueChanges
-        .debounceTime(400)
-        .switchMap(x =>  this.searchSerivce.getSelection(this.offset,this.limit,x))
-        .subscribe(data => this.share.setSearchResult(data.result));
-    }
-    change(){
-        console.log('searching');
-        this.share.setIsSearching(true);
-    }
+  public limit:number = 20;
+  public offset:number = 0;
+  public search:string = '';
+
+  ngOnInit() {
+    var search = this.form.find('search');
+    search.valueChanges
+      .debounceTime(800)
+      .switchMap(x =>  this.share.getSelection(x))
+      .subscribe(data => {
+        if(data.status == 'true') {
+          this.share.setSearchResult(data.result);
+          this.share.setOffset(this.share.getOffest() + 20);
+          this.share.isEndSearching = data.status === 'true';
+        }
+      });
+  }
+
+  form:ControlGroup;
+
+  constructor(fb:FormBuilder, private share:GlobalService) {
+    this.form = fb.group({
+      search: []
+    });
+
+
+  }
+
+  ngAfterViewInit() {
+
+  }
+
+  change() {
+    console.log('searching');
+    this.share.setIsSearching(true);
+    this.share.setOffset(0);
+    this.share.setIsEndSearching(false);
+  }
 }

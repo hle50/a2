@@ -7,6 +7,8 @@ import {SideBarComponent} from './sidebar/sidebar.component';
 import {CartComponent} from './cart/cart.component';
 import {HomeComponent} from './home/home.component';
 import {CatComponent} from './cat/cat.component';
+import {GlobalService} from './shared/global.service';
+import Global = NodeJS.Global;
 
 
 @RouteConfig([
@@ -42,8 +44,10 @@ import {CatComponent} from './cat/cat.component';
             <div class="col-md-7">
                 <div class="col-md-5 first-message">
 
+
                 </div>
                 <div class="col-md-2 ajax-loading-product">
+                 <!--<i  class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>-->
                 </div>
                 <div class="col-md-5 first-message">
 
@@ -75,12 +79,13 @@ import {CatComponent} from './cat/cat.component';
     </div>
 </section>
     `,
-    directives: [NavComponent, SearchComponent, SideBarComponent, CartComponent, ROUTER_DIRECTIVES]
+    directives: [NavComponent, SearchComponent, SideBarComponent, CartComponent, ROUTER_DIRECTIVES],
+    providers: [GlobalService]
 })
 export class AppComponent {
     viewContainerRef;
 
-    public constructor(viewContainerRef:ViewContainerRef) {
+    public constructor(viewContainerRef:ViewContainerRef, private share: GlobalService) {
         // You need this small hack in order to catch application root view container ref
         this.viewContainerRef = viewContainerRef;
     }

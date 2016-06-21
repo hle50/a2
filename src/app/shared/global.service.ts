@@ -1,55 +1,98 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
+import {Http} from '@angular/http';
+import 'rxjs/add/operator/map';
+
 @Injectable()
 export class GlobalService {
-    isSearching:boolean =false;
-    searchResult:any [];
-    cart:any[] = [];
-    message:{} = {
-        cartUpdate: 'Your cart is updated',
-        emptyCart: 'Your cart is empty now',
-        itemRemoved: 'Item is removed from your cart',
+  isSearching:boolean = false;
+  searchResult:any [];
+  cart:any[] = [];
+  searchValue:string = '';
+  limit:number = 20;
+  offset:number = 0;
+  isEndSearching:boolean = false;
+  message:{} = {
+    cartUpdate: 'Your cart is updated',
+    emptyCart: 'Your cart is empty now',
+    itemRemoved: 'Item is removed from your cart',
 
-    };
+  };
 
-    getMessage() {
-        return this.message;
-    }
+  constructor(private _http:Http) {
+  }
 
-    setCart(item) {
-        this.cart.push(item);
-    }
+  getMessage() {
+    return this.message;
+  }
 
-    getCart() {
-        return this.cart;
-    }
+  setCart(item) {
+    this.cart.push(item);
+  }
 
-    updateCart(cart) {
-        this.cart = cart;
-    }
+  getCart() {
+    return this.cart;
+  }
 
-    totalPrice() {
-        if (!this.cart.length) {
-            return 0;
-        }
-        else {
-            return _.sumBy(this.cart, function (o) {
-                return (o.price * o.quantity);
-            })
-        }
+  updateCart(cart) {
+    this.cart = cart;
+  }
+
+  totalPrice() {
+    if (!this.cart.length) {
+      return 0;
     }
-    
-    setSearchResult(result){
-        this.searchResult = result;
+    else {
+      return _.sumBy(this.cart, function (o) {
+        return (o.price * o.quantity);
+      })
     }
-     getSearchResult(){
-        return this.searchResult;
-    }
-    
-    getIsSearching(){
-        return this.isSearching;
-    }
-    setIsSearching(value){
-        this.isSearching = value;
-    }
+  }
+
+  setSearchResult(result) {
+    this.searchResult = result;
+  }
+
+  getSearchResult() {
+    return this.searchResult;
+  }
+
+  getIsSearching() {
+    return this.isSearching;
+  }
+
+  setIsSearching(value) {
+    this.isSearching = value;
+  }
+
+  setSearchValue(v) {
+    this.searchValue = v;
+  }
+
+  getSearchValue() {
+    return this.searchValue;
+  }
+
+  getOffest() {
+    return this.offset;
+  }
+
+  setOffset(o) {
+    this.offset = o;
+  }
+
+  setIsEndSearching(v) {
+    this.isEndSearching = v;
+  }
+
+  getIsEndSearching() {
+    return this.isEndSearching;
+  }
+
+  getSelection(search) {
+    this.setSearchValue(search);
+    let _url = "http://catalogue.marketoi.com/index.php/api/Front/products/?limit=" + this.limit + '&offset=' + this.offset + '&search=' + search;
+    return this._http.get(_url)
+      .map(res => res.json());
+  }
 }
