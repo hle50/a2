@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
     selector: 'nav',
     //templateUrl: 'app/nav/nav.template.html',
     template:`
-    <header>
+    <header style="background-color: #2d2c2f;">
     <div>
         <div class="col-xs-12 col-md-12 header-bar-section">
             <a href="/shoppingCart" class="pull-right cartIconHeader">

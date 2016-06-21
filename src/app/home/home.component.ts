@@ -1,15 +1,16 @@
 
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from '@angular/router-deprecated';
+import {RouterLink, Router} from '@angular/router-deprecated';
 import {HomeService} from './home.service';
-import {ProductComponent} from '../product/product.component'
-import {SpinnerComponent} from '../shared/spinner.component'
+import {ProductComponent} from '../product/product.component';
+import {SearchResultComponent} from '../shared/searchResult';
+import {GlobalService} from "../shared/global.service";
 
 @Component({
     //templateUrl: 'app/home/home.template.html',
     template:`
 
-    <div class="row store-items" id="selections_section">
+    <div *ngIf="!share.getIsSearching()" class="row store-items" id="selections_section">
         <div class="container">
             <div *ngFor="let item of data">
 
@@ -47,21 +48,30 @@ import {SpinnerComponent} from '../shared/spinner.component'
         </div>
 
     </div>
-
+{{share.getIsSearching()}}
+    <search-result  (window:scroll)="onScroll($event)"></search-result>
 
     `,
-    providers: [HomeService],
-    directives: [RouterLink, ProductComponent, SpinnerComponent]
+    providers: [HomeService,Router],
+    directives: [RouterLink, ProductComponent,SearchResultComponent]
 })
 export class HomeComponent implements OnInit {
     data;
-    
-    constructor(private _service: HomeService){
+    visible;
+    result;
+    constructor(private _service: HomeService,private share: GlobalService){
+        // this.router.changes.subscribe(val => console.log(val));
     }
 
     ngOnInit(){
+        this.visible = this.share.getIsSearching();
+        this.result = this.share.getSearchResult();
         this._service.getSelection()
-            .subscribe(data => this.data = data.result);
+            .subscribe((data) => this.data = data.result);
+    }
+    
+    onScroll(){
+        console.log('abc');
     }
     
 }

@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 @Injectable()
 export class GlobalService {
+    isSearching:boolean =false;
+    searchResult:any [];
     cart:any[] = [];
     message:{} = {
         cartUpdate: 'Your cart is updated',
@@ -35,5 +37,19 @@ export class GlobalService {
                 return (o.price * o.quantity);
             })
         }
+    }
+    
+    setSearchResult(result){
+        this.searchResult = result;
+    }
+     getSearchResult(){
+        return this.searchResult;
+    }
+    
+    getIsSearching(){
+        return this.isSearching;
+    }
+    setIsSearching(value){
+        this.isSearching = value;
     }
 }
