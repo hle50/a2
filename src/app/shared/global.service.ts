@@ -11,6 +11,7 @@ export class GlobalService {
   searchValue:string = '';
   limit:number = 20;
   offset:number = 0;
+  hideWhenCheckOut:boolean = false;
   isEndSearching:boolean = false;
   message:{} = {
     cartUpdate: 'Your cart is updated',
@@ -94,5 +95,11 @@ export class GlobalService {
     let _url = "http://catalogue.marketoi.com/index.php/api/Front/products/?limit=" + this.limit + '&offset=' + this.offset + '&search=' + search;
     return this._http.get(_url)
       .map(res => res.json());
+  }
+  getHideWhenCheckOut(){
+    return this.hideWhenCheckOut;
+  }
+  setHideWhenCheckOut(value){
+    this.hideWhenCheckOut = value;
   }
 }

@@ -1,17 +1,19 @@
 import {Component, OnInit} from '@angular/core';
+import {GlobalService} from '../shared/global.service';
+import {RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 
 
 @Component({
-    selector: 'nav',
-    //templateUrl: 'app/nav/nav.template.html',
-    template:`
+  selector: 'nav',
+  //templateUrl: 'app/nav/nav.template.html',
+  template: `
     <header style="background-color: #2d2c2f;">
     <div>
         <div class="col-xs-12 col-md-12 header-bar-section">
             <a href="/shoppingCart" class="pull-right cartIconHeader">
                 <i class="shopping-cart-icon header"></i>
           <span class="label label-primary label-indicator top-right-number-notification
- animation-floating cartItemsCount">0</span>
+ animation-floating cartItemsCount">{{share.getCart().length}}</span>
             </a>
             <nav class="site-navigation-bar">
                 <a href="javascript:void(0)" class="btn btn-default site-menu-toggle visible-xs visible-sm">
@@ -32,13 +34,16 @@ import {Component, OnInit} from '@angular/core';
 
                 </ul>
             </nav>
-            <a class="site-logo"><span class="main-logo"></span></a>
+            <span [routerLink]="['Home']" class="site-logo pointer"><span class="main-logo"></span></span>
         </div>
     </div>
 </header>
-    `
-   
+    `,
+  directives: [ROUTER_DIRECTIVES],
+
 })
-export class NavComponent  {
-  
+export class NavComponent {
+  constructor(private share:GlobalService) {
+
+  }
 }

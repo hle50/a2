@@ -7,13 +7,15 @@ import {SideBarComponent} from './sidebar/sidebar.component';
 import {CartComponent} from './cart/cart.component';
 import {HomeComponent} from './home/home.component';
 import {CatComponent} from './cat/cat.component';
+import {CheckoutComponent} from './checkout/checkout.component';
 import {GlobalService} from './shared/global.service';
-import Global = NodeJS.Global;
+
 
 
 @RouteConfig([
     {path: '/', name: 'Home', component: HomeComponent},
     {path: '/go/:cat', name: 'Cat', component: CatComponent},
+    {path: '/checkout', name: 'Checkout', component: CheckoutComponent},
     // { path: '/users/:id', name: 'EditUser', component: UserFormComponent },
     // { path: '/users/new', name: 'NewUser', component: UserFormComponent },
     // { path: '/posts', name: 'Posts', component: PostsComponent },
@@ -25,7 +27,7 @@ import Global = NodeJS.Global;
     //templateUrl:'./app/app.template.html',
     template: `
     <nav></nav>
-<search></search>
+<search *ngIf="!share.getHideWhenCheckOut()"></search>
 <section class="site-section site-section-location">
     <div class="container">
         <div class="row">
@@ -66,15 +68,15 @@ import Global = NodeJS.Global;
 <section class="site-content site-section">
     <div class="container">
         <div class="row">
-            <side-bar></side-bar>
+            <side-bar *ngIf="!share.getHideWhenCheckOut()"></side-bar>
 
 
 
-            <div class="col-md-7 col-lg-7">
+            <div class="{{!share.getHideWhenCheckOut() ? 'col-md-7 col-lg-7' : 'col-lg-12 col-md-12'}}">
                 <router-outlet></router-outlet>
             </div>
 
-            <cart></cart>
+            <cart *ngIf="!share.getHideWhenCheckOut()"></cart>
         </div>
     </div>
 </section>

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {GlobalService} from "../shared/global.service";
 import {Message} from '../shared/message';
+import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import * as _ from 'lodash';
 @Component({
-    selector: 'cart',
-    template:`
+  selector: 'cart',
+  template: `
     <div class="col-md-3 col-lg-3 cart-quick-view">
     <div id="cartQuickView">
         <div class="col-md-12 cart-total">
@@ -23,7 +24,7 @@ import * as _ from 'lodash';
           <button class="btn btn-sm btn-block btn-default">VIEW</button>
         </span>
         <span class="mini-cart-button">
-          <button class="btn btn-sm btn-block btn-success">CHECKOUT</button>
+          <a [routerLink]="['Checkout']" class="btn btn-sm btn-block btn-success">CHECKOUT</a>
         </span>
 
             </div>
@@ -70,42 +71,44 @@ import * as _ from 'lodash';
     </div>
 </div>
     `,
-    //templateUrl: 'app/cart/cart.template.html',
-    providers:[ Message]
+  //templateUrl: 'app/cart/cart.template.html',
+  providers: [Message],
+  directives: [ROUTER_DIRECTIVES]
+
 
 })
 export class CartComponent {
 
-    constructor(private share:GlobalService,private message: Message) {
+  constructor(private share:GlobalService, private message:Message) {
 
-    }
+  }
 
-    emptyCart() {
-        this.share.updateCart([]);
-       
-    }
+  emptyCart() {
+    this.share.updateCart([]);
 
-    removeItem(item) {
+  }
 
-        var current = _.filter(this.share.getCart(), function (obj) {
-            return obj.id != item.id;
-        });
-        this.share.updateCart(current);
-       
-    }
+  removeItem(item) {
 
-    up(item) {
-        item.quantity += 1;
-       
-    }
+    var current = _.filter(this.share.getCart(), function (obj) {
+      return obj.id != item.id;
+    });
+    this.share.updateCart(current);
 
-    down(item) {
-        if (item.quantity == 1)
-            return;
-        item.quantity -= 1;
-     
+  }
 
-    }
+  up(item) {
+    item.quantity += 1;
+
+  }
+
+  down(item) {
+    if (item.quantity == 1)
+      return;
+    item.quantity -= 1;
+
+
+  }
 
 
 }

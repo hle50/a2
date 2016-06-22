@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.share.setHideWhenCheckOut(false);
     this.share.setIsSearching(false);
     this.share.setOffset(0);
     this.share.setIsEndSearching(false);

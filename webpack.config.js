@@ -16,9 +16,9 @@ var webpackConfig = {
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'], minChunks: Infinity }),
-    // new webpack.optimize.UglifyJsPlugin({minimize: true,compress: {
-    //     warnings: false
-    // }})
+     new webpack.optimize.UglifyJsPlugin({minimize: true,compress: {
+         warnings: false
+     }})
   ],
 
   module: {
